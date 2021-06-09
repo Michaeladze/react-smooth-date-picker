@@ -1,16 +1,17 @@
 import React, {
-  Dispatch, ReactNode, RefObject, SetStateAction, useCallback, useEffect, useRef, useState
+  Dispatch, ReactNode, RefObject, SetStateAction, useCallback, useEffect, useMemo, useRef, useState
 } from 'react';
 import './DatepickerCalendar.scss';
 import Chevron from '../../icons/chevron-left';
 import {
   compareMonths, formatDate,
-  getDaysForMonth, isCurrentDay, isCurrentMonth, months, stringToDate, weekDays
+  getDaysForMonth, getMonthsList, getWeekdaysList, isCurrentDay, isCurrentMonth, stringToDate
 } from './datepicker.utils';
 import {
-  DateFormat,
+  DateFormat, DateLocale,
   IDatepickerActivePeriod, IDatepickerDay, IDatepickerPeriodType, IDatepickerStack
 } from './datepicker.types';
+import { getTodayWordLocale } from '../_utils/dictionary';
 
 interface IDatepickerCalendarProps {
   value: string;
@@ -22,7 +23,7 @@ interface IDatepickerCalendarProps {
   toggleRef: RefObject<HTMLDivElement>
   range: boolean;
   showTodayButton: boolean;
-  locale: 'ru' | 'en';
+  locale: DateLocale;
   position: 'left' | 'right';
   format: DateFormat;
   separator: string;
@@ -45,6 +46,8 @@ const DatepickerCalendar: React.FC<IDatepickerCalendarProps> = ({
 }: IDatepickerCalendarProps) => {
 
   const contentRef = useRef<HTMLDivElement>(null);
+  const months: string[] = useMemo(() => getMonthsList(locale), [locale]);
+  const weekDays: string[] = useMemo(() => getWeekdaysList(locale), [locale]);
 
   // -------------------------------------------------------------------------------------------------------------------
 
@@ -144,7 +147,7 @@ const DatepickerCalendar: React.FC<IDatepickerCalendarProps> = ({
 
       if (dates[0] === undefined) {
         dates[0] = date;
-        setInputValue(formatDate(date.getTime(), format).date + ` - __${separator}__${separator}____`);
+        setInputValue(formatDate(date.getTime(), format) + ` - __${separator}__${separator}____`);
       } else {
         dates[1] = date;
 
@@ -152,12 +155,12 @@ const DatepickerCalendar: React.FC<IDatepickerCalendarProps> = ({
           dates = [dates[1], dates[0]];
         }
 
-        const newValue = `${formatDate(dates[0]?.getTime(), format).date} - ${formatDate(dates[1]?.getTime(), format).date}`;
+        const newValue = `${formatDate(dates[0]?.getTime(), format)} - ${formatDate(dates[1]?.getTime(), format)}`;
         setInputValue(newValue);
         toggleCalendar(false);
       }
     } else {
-      setInputValue(formatDate(date.getTime(), format).date);
+      setInputValue(formatDate(date.getTime(), format));
       setCurrentDate(date);
       toggleCalendar(false);
     }
@@ -266,7 +269,7 @@ const DatepickerCalendar: React.FC<IDatepickerCalendarProps> = ({
     });
   };
 
-  const monthsJSX = months[locale].map((m: string, i: number, array: string[]) => {
+  const monthsJSX = months.map((m: string, i: number, array: string[]) => {
     const d = new Date(activePeriod.year, i);
     const rangeMonthCondition = (rangeDates[0] && isCurrentMonth(d, rangeDates[0])) || (rangeDates[1] && isCurrentMonth(d, rangeDates[1]));
     const activeCondition = range ? rangeMonthCondition : isCurrentMonth(d, currentDate);
@@ -388,7 +391,7 @@ const DatepickerCalendar: React.FC<IDatepickerCalendarProps> = ({
   const [periodType, setPeriodType] = useState<IDatepickerPeriodType>('day');
 
   const periodTypeLabel: Record<IDatepickerPeriodType, ReactNode> = {
-    day: <> { months[locale][activePeriod.month] } { activePeriod.year } </>,
+    day: <> { months[activePeriod.month] } { activePeriod.year } </>,
     month: <> { activePeriod.year } </>,
     year: <> { decadeStart } - { decadeStart + 9 } </>
   };
@@ -455,7 +458,7 @@ const DatepickerCalendar: React.FC<IDatepickerCalendarProps> = ({
           showTodayButton && (
             <button type='button' className='ui-datepicker__calendar-today' disabled={ todayDisabled }
               onClick={ () => onDateChange(new Date()) }>
-              { locale === 'ru' ? 'Сегодня' : 'Today' }
+              { getTodayWordLocale(locale) }
             </button>
           )
         }
@@ -463,7 +466,7 @@ const DatepickerCalendar: React.FC<IDatepickerCalendarProps> = ({
 
       { periodType === 'day' && (
         <div className='ui-datepicker__calendar-week'>
-          { weekDays[locale].map((d: string) => <div
+          { weekDays.map((d: string) => <div
             className='ui-datepicker__calendar-tile ui-datepicker__calendar-week-day' key={ d }>{ d }</div>) }
         </div>
       ) }

@@ -6,11 +6,14 @@ import Calendar from '../icons/calendar-outline';
 import DatepickerCalendar from './DatepickerCalendar';
 import InputMask from 'react-input-mask';
 import {
-  formatDate, generateMask, getWeekDay, parseToFormat, stringToDate
+  formatDate, generateMask, getWeekdayLocale, parseToFormat, stringToDate
 } from './DatepickerCalendar/datepicker.utils';
-import { DateFormat, IDateVariants } from './DatepickerCalendar/datepicker.types';
+import {
+  DateFormat, DateLocale, IDateVariants
+} from './DatepickerCalendar/datepicker.types';
 import useClickOutside from '../../hooks/useClickOutside';
 import Input from './Input/Input';
+import { DEFAULT_LOCALE } from './_utils/constants';
 
 export interface IDatepickerProps {
   name?: string;
@@ -23,7 +26,7 @@ export interface IDatepickerProps {
   onChange?: (value: IDateVariants, name?: string) => void;
   range?: boolean;
   showDayOfWeek?: boolean;
-  locale?: 'ru' | 'en';
+  locale?: DateLocale;
   showTodayButton?: boolean;
   position?: 'left' | 'right';
   format?: DateFormat;
@@ -31,8 +34,8 @@ export interface IDatepickerProps {
 
 const Datepicker: React.FC<IDatepickerProps> = ({
   name = 'datepicker',
-  locale = 'en',
-  placeholder = locale === 'ru' ? 'Выберите дату' : 'Select date',
+  locale = 'en-GB',
+  placeholder,
   defaultValue,
   min,
   max,
@@ -45,6 +48,15 @@ const Datepicker: React.FC<IDatepickerProps> = ({
   position = 'left',
   format = 'dd.mm.yyyy'
 }: IDatepickerProps) => {
+
+  /** Validate locale */
+  try {
+    new Date().toLocaleString(locale);
+  } catch (e) {
+    console.error(e);
+    locale = DEFAULT_LOCALE;
+  }
+
   const separator = format[2];
 
   const [dayOfWeek, setDayOfWeek] = useState<string[]>([]);
@@ -105,7 +117,7 @@ const Datepicker: React.FC<IDatepickerProps> = ({
           fromD = minDate ? minDate.getTime() : maxDate.getTime();
         }
 
-        from = formatDate(fromD, format).date;
+        from = formatDate(fromD, format);
       }
 
       if (to && !to.includes('_')) {
@@ -119,7 +131,7 @@ const Datepicker: React.FC<IDatepickerProps> = ({
           toD = maxDate.getTime();
         }
 
-        to = formatDate(toD, format).date;
+        to = formatDate(toD, format);
       }
 
       if (from || to) {
@@ -129,11 +141,11 @@ const Datepicker: React.FC<IDatepickerProps> = ({
       const d = stringToDate(date, format);
 
       if (date !== '' && minDate && d.getTime() < minDate.getTime()) {
-        result = formatDate(minDate.getTime(), format).date;
+        result = formatDate(minDate.getTime(), format);
       }
 
       if (maxDate && d.getTime() > maxDate.getTime()) {
-        result = formatDate(maxDate.getTime(), format).date;
+        result = formatDate(maxDate.getTime(), format);
       }
     }
 
@@ -247,8 +259,7 @@ const Datepicker: React.FC<IDatepickerProps> = ({
       if (!range) {
         if (!inputValue.includes('_') && inputValue !== '') {
           const result = getReturnValue(inputValue, range);
-          const dayFrom = result.date.value.getDay();
-          setDayOfWeek([getWeekDay(dayFrom, locale)]);
+          setDayOfWeek([getWeekdayLocale(result.date.value, locale, 'short')]);
         }
       } else {
         const [fromValue, toValue] = inputValue.split(' - ');
@@ -256,18 +267,21 @@ const Datepicker: React.FC<IDatepickerProps> = ({
 
         if (fromValue && !fromValue.includes('_')) {
           const from = getReturnValue(fromValue, false);
-          const dayFrom = from.date.from.getDay();
-          setDayOfWeek([getWeekDay(dayFrom, locale)]);
+          setDayOfWeek([getWeekdayLocale(from.date.from, locale, 'short')]);
         }
 
         if (toValue && !toValue.includes('_')) {
           const to = getReturnValue(toValue, false);
-          const dayTo = to.date.from.getDay();
-          setDayOfWeek([...dayOfWeek, getWeekDay(dayTo, locale)]);
+          setDayOfWeek([...dayOfWeek, getWeekdayLocale(to.date.from, locale, 'short')]);
         }
       }
     }
-  }, [inputValue, showDayOfWeek, range]);
+  }, [
+    inputValue,
+    showDayOfWeek,
+    range,
+    locale
+  ]);
 
   // -------------------------------------------------------------------------------------------------------------------
 

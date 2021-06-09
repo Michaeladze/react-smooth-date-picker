@@ -2,7 +2,7 @@ export type IDatepickerPeriod = 'prev' | 'current' | 'next';
 
 export type IDatepickerPeriodType = 'day' | 'month' | 'year';
 
-export type DateLocale = 'ru' | 'en';
+export type DateLocale = string;
 
 export interface IDatepickerActivePeriod {
   month: number;

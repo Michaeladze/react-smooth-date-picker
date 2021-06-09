@@ -1,59 +1,7 @@
 import {
   DateFormat,
-  DateLocale, IDatepickerActivePeriod, IFormattedDate
+  DateLocale, IDatepickerActivePeriod
 } from './datepicker.types';
-
-export const weekDays: Record<DateLocale, string[]> = {
-  ru: [
-    'пн',
-    'вт',
-    'ср',
-    'чт',
-    'пт',
-    'сб',
-    'вс'
-  ],
-  en: [
-    'mon',
-    'tue',
-    'wed',
-    'thu',
-    'fri',
-    'sat',
-    'sun'
-  ]
-};
-
-export const months: Record<DateLocale, string[]> = {
-  ru: [
-    'январь',
-    'февраль',
-    'март',
-    'апрель',
-    'май',
-    'июнь',
-    'июль',
-    'август',
-    'сентябрь',
-    'октябрь',
-    'ноябрь',
-    'декабрь'
-  ],
-  en: [
-    'january',
-    'february',
-    'march',
-    'april',
-    'may',
-    'june',
-    'july',
-    'august',
-    'september',
-    'october',
-    'november',
-    'december'
-  ]
-};
 
 export const getDaysForMonth = (d?: Date): IDatepickerActivePeriod => {
   const date = d || new Date();
@@ -163,11 +111,11 @@ export const parseToFormat = (format: DateFormat, defaultValue?: Date | string |
   }
 
   if (typeof defaultValue === 'number') {
-    inputValue = formatDate(defaultValue, format).date;
+    inputValue = formatDate(defaultValue, format);
   }
 
   if (defaultValue instanceof Date) {
-    inputValue = formatDate(defaultValue.getTime(), format).date;
+    inputValue = formatDate(defaultValue.getTime(), format);
   }
 
   const order = format.split(separator);
@@ -187,72 +135,21 @@ export const parseToFormat = (format: DateFormat, defaultValue?: Date | string |
   };
 };
 
-export const getWeekDay = (n: number, locale: DateLocale): string => {
-  const weekDays: Record<DateLocale, string[]> = {
-    ru: [
-      'Вс',
-      'Пн',
-      'Вт',
-      'Ср',
-      'Чт',
-      'Пт',
-      'Сб'
-    ],
-    en: [
-      'Sun',
-      'Mon',
-      'Tue',
-      'Wed',
-      'Thu',
-      'Fri',
-      'Sat'
-    ]
-  };
-
-  return weekDays[locale][n];
-};
-
 //
-
-export const getMonthName = (value: string) => {
-  if (value) {
-    const arr: string[] = value.split('');
-    let result;
-
-    if (months.en.indexOf(value) !== -1) {
-      arr.splice(arr.length - 1, 1, 'я');
-      result = arr.join('');
-      return result;
-    }
-
-    arr.push('а');
-    result = arr.join('');
-    return result;
-  }
-
-  return '';
-};
 
 export const addLeadingZeros = (number: number, length = 2) => {
   return ('0'.repeat(length) + number).slice(-length);
 };
 
-export const formatDate = (date: string | number | undefined, format: DateFormat): IFormattedDate => {
+export const formatDate = (date: string | number | undefined, format: DateFormat): string => {
   if (!date) {
     date = Date.now();
   }
 
   const tempDate = new Date(date);
   const month = addLeadingZeros(tempDate.getMonth() + 1);
-  const monthLong = getMonthName(months.en[tempDate.getMonth()]);
-  const monthName = months.en[tempDate.getMonth()];
 
   const dayOfMonth = addLeadingZeros(tempDate.getDate());
-  const dayOfWeek = weekDays.en[tempDate.getDay()];
-  const tempHour = tempDate.getHours();
-  const hour = addLeadingZeros(tempHour);
-  const tempMinutes = tempDate.getMinutes();
-  const minutes = addLeadingZeros(tempMinutes);
   const year = tempDate.getFullYear();
 
   const separator = format[2];
@@ -266,19 +163,7 @@ export const formatDate = (date: string | number | undefined, format: DateFormat
     dateString = `${month}${separator}${dayOfMonth}${separator}${year}`;
   }
 
-  return {
-    month,
-    monthLong,
-    monthShort: '',
-    monthName,
-    dayOfMonth,
-    dayOfWeek,
-    hour,
-    minutes,
-    year,
-    date: dateString,
-    time: `${hour}:${minutes}`
-  };
+  return dateString;
 };
 
 export const stringToDate = (s: string, format: DateFormat): Date => {
@@ -289,7 +174,7 @@ export const stringToDate = (s: string, format: DateFormat): Date => {
   }
 
   const separator = format[2];
-  const formatToday = formatDate(d.getTime(), format).date.split(separator);
+  const formatToday = formatDate(d.getTime(), format).split(separator);
 
   const order = format.split(separator);
   let dd, mm, yyyy;
@@ -425,4 +310,42 @@ export const generateMask = (
   }
 
   return mask;
+};
+
+/** Locale month name */
+export const getMonthLocale = (month: number, locale: DateLocale, length: 'short' | 'long' = 'long'): string => {
+  const date = new Date(2000, month, 1);
+  return date.toLocaleString(locale, { month: length });
+};
+
+/** Months */
+export const getMonthsList = (locale: DateLocale, length: 'short' | 'long' = 'long'): string[] => {
+  const months: string[] = [];
+
+  for (let i = 0; i < 12; i++) {
+    months.push(getMonthLocale(i, locale, length));
+  }
+
+  return months;
+};
+
+/** Locale day of the week */
+export const getWeekdayLocale = (date: Date, locale: DateLocale, length: 'short' | 'long' = 'long'): string => {
+  const weekday = date.toLocaleString(locale, { weekday: length });
+  return replaceAt(weekday, 0, weekday[0].toUpperCase());
+};
+
+/** Locale list of weekdays */
+export const getWeekdaysList = (locale: DateLocale, length: 'short' | 'long' = 'short'): string[] => {
+  const weekdayDateMap = [
+    new Date('2020-01-06'),
+    new Date('2020-01-07'),
+    new Date('2020-01-08'),
+    new Date('2020-01-09'),
+    new Date('2020-01-10'),
+    new Date('2020-01-11'),
+    new Date('2020-01-12'),
+  ];
+
+  return weekdayDateMap.map((date: Date) => getWeekdayLocale(date, locale, length));
 };

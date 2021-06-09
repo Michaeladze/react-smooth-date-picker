@@ -3,9 +3,10 @@ import './App.css';
 import Datepicker from './components/Datepicker';
 
 function App() {
+
   return (
     <div className='App'>
-      <Datepicker showTodayButton/>
+      <Datepicker showTodayButton locale='zh' range showDayOfWeek/>
     </div>
   );
 }
