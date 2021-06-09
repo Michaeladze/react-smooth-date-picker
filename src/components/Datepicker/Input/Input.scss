@@ -1,0 +1,18 @@
+.ui__input {
+  width: 100%;
+  height: 100%;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 21px;
+  padding: 15px 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: 0;
+  color: black;
+  background-color: #fff;
+
+  &::placeholder {
+    color: #888;
+  }
+}
