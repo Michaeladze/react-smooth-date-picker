@@ -4,14 +4,17 @@ import React, {
 import './DatepickerCalendar.scss';
 import Chevron from '../../icons/chevron-left';
 import {
-  compareMonths, formatDate,
-  getDaysForMonth, getMonthsList, getWeekdaysList, isCurrentDay, isCurrentMonth, stringToDate
-} from './datepicker.utils';
-import {
   DateFormat, DateLocale,
   IDatepickerActivePeriod, IDatepickerDay, IDatepickerPeriodType, IDatepickerStack
 } from './datepicker.types';
 import { getTodayWordLocale } from '../_utils/dictionary';
+import { getMonthsList, getWeekdaysList } from '../_utils/localeNames';
+import { stringToDate } from '../_utils/stringToDate';
+import { getDaysForMonth } from '../_utils/getDaysForMonth';
+import { formatDate } from '../_utils/formatDate';
+import {
+  compareMonths, isCurrentDay, isCurrentMonth
+} from '../_utils/compareDates';
 
 interface IDatepickerCalendarProps {
   value: string;

@@ -6,14 +6,16 @@ import Calendar from '../icons/calendar-outline';
 import DatepickerCalendar from './DatepickerCalendar';
 import InputMask from 'react-input-mask';
 import {
-  formatDate, generateMask, getWeekdayLocale, parseToFormat, stringToDate
-} from './DatepickerCalendar/datepicker.utils';
-import {
   DateFormat, DateLocale, IDateVariants
 } from './DatepickerCalendar/datepicker.types';
 import useClickOutside from '../../hooks/useClickOutside';
 import Input from './Input/Input';
 import { DEFAULT_LOCALE } from './_utils/constants';
+import { parseToFormat } from './_utils/parseToFormat';
+import { stringToDate } from './_utils/stringToDate';
+import { formatDate } from './_utils/formatDate';
+import { getWeekdayLocale } from './_utils/localeNames';
+import { generateMask } from './_utils/generateMask';
 
 export interface IDatepickerProps {
   name?: string;
@@ -54,7 +56,7 @@ const Datepicker: React.FC<IDatepickerProps> = ({
     new Date().toLocaleString(locale);
   } catch (e) {
     console.error(e);
-    locale = DEFAULT_LOCALE;
+    locale = window.navigator.language || DEFAULT_LOCALE;
   }
 
   const separator = format[2];

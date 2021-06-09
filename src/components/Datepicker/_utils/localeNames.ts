@@ -1,0 +1,40 @@
+import { DateLocale } from '../DatepickerCalendar/datepicker.types';
+import { replaceAt } from './common';
+
+/** Locale month name */
+export const getMonthLocale = (month: number, locale: DateLocale, length: 'short' | 'long' = 'long'): string => {
+  const date = new Date(2000, month, 1);
+  return date.toLocaleString(locale, { month: length });
+};
+
+/** Locale months list */
+export const getMonthsList = (locale: DateLocale, length: 'short' | 'long' = 'long'): string[] => {
+  const months: string[] = [];
+
+  for (let i = 0; i < 12; i++) {
+    months.push(getMonthLocale(i, locale, length));
+  }
+
+  return months;
+};
+
+/** Locale day of the week */
+export const getWeekdayLocale = (date: Date, locale: DateLocale, length: 'short' | 'long' = 'long'): string => {
+  const weekday = date.toLocaleString(locale, { weekday: length });
+  return replaceAt(weekday, 0, weekday[0].toUpperCase());
+};
+
+/** Locale list of weekdays */
+export const getWeekdaysList = (locale: DateLocale, length: 'short' | 'long' = 'short'): string[] => {
+  const weekdayDateMap = [
+    new Date('2020-01-06'),
+    new Date('2020-01-07'),
+    new Date('2020-01-08'),
+    new Date('2020-01-09'),
+    new Date('2020-01-10'),
+    new Date('2020-01-11'),
+    new Date('2020-01-12'),
+  ];
+
+  return weekdayDateMap.map((date: Date) => getWeekdayLocale(date, locale, length));
+};

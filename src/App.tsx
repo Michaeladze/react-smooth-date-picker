@@ -6,7 +6,7 @@ function App() {
 
   return (
     <div className='App'>
-      <Datepicker showTodayButton locale='zh' range showDayOfWeek/>
+      <Datepicker showTodayButton locale='ru' range showDayOfWeek/>
     </div>
   );
 }
