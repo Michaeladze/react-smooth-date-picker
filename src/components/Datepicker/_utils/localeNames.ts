@@ -1,4 +1,4 @@
-import { DateLocale } from '../DatepickerCalendar/datepicker.types';
+import { DateLocale, WeekDay } from '../DatepickerCalendar/datepicker.types';
 import { replaceAt } from './common';
 
 /** Locale month name */
@@ -25,16 +25,28 @@ export const getWeekdayLocale = (date: Date, locale: DateLocale, length: 'short'
 };
 
 /** Locale list of weekdays */
-export const getWeekdaysList = (locale: DateLocale, length: 'short' | 'long' = 'short'): string[] => {
-  const weekdayDateMap = [
+export const getWeekdaysList = (locale: DateLocale, length: 'short' | 'long' = 'short', weekStartsFrom: WeekDay = 1): string[] => {
+  const weekdayDateMap: Date[] = [
+    new Date('2020-01-05'),
     new Date('2020-01-06'),
     new Date('2020-01-07'),
     new Date('2020-01-08'),
     new Date('2020-01-09'),
     new Date('2020-01-10'),
     new Date('2020-01-11'),
-    new Date('2020-01-12'),
   ];
 
-  return weekdayDateMap.map((date: Date) => getWeekdayLocale(date, locale, length));
+  const shiftedWeekdayDateMap: Date[] = [];
+  let i: number = +weekStartsFrom;
+
+  while (shiftedWeekdayDateMap.length !== 7) {
+    if (i >= weekdayDateMap.length) {
+      i = 0;
+    }
+
+    shiftedWeekdayDateMap.push(weekdayDateMap[i]);
+    i++;
+  }
+
+  return shiftedWeekdayDateMap.map((date: Date) => getWeekdayLocale(date, locale, length));
 };

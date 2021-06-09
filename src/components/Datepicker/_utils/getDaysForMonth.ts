@@ -1,6 +1,6 @@
-import { IDatepickerActivePeriod } from '../DatepickerCalendar/datepicker.types';
+import { IDatepickerActivePeriod, WeekDay } from '../DatepickerCalendar/datepicker.types';
 
-export const getDaysForMonth = (d?: Date): IDatepickerActivePeriod => {
+export const getDaysForMonth = (weekStartsFrom: WeekDay, d?: Date): IDatepickerActivePeriod => {
   const date = d || new Date();
 
   const result: IDatepickerActivePeriod = {
@@ -13,12 +13,14 @@ export const getDaysForMonth = (d?: Date): IDatepickerActivePeriod => {
   const weekDayOfFirstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDay();
   const weekDayOfLastDay = new Date(date.getFullYear(), date.getMonth(), daysInCurrentMonth).getDay();
 
-  if (weekDayOfFirstDay !== 1) {
-    let daysFromPrevMonth = weekDayOfFirstDay - 2;
+  if (weekDayOfFirstDay !== +weekStartsFrom) {
+    let daysFromPrevMonth = weekDayOfFirstDay - +weekStartsFrom;
 
     if (daysFromPrevMonth < 0) {
       daysFromPrevMonth = 7 - Math.abs(daysFromPrevMonth);
     }
+
+    daysFromPrevMonth -= 1;
 
     let lastDayInPrevMonth = new Date(date.getFullYear(), date.getMonth(), 0).getDate();
 
@@ -38,15 +40,14 @@ export const getDaysForMonth = (d?: Date): IDatepickerActivePeriod => {
     });
   }
 
-  if (weekDayOfLastDay !== 0) {
-    const daysFromNextMonth = 7 - weekDayOfLastDay;
 
-    for (let i = 1; i <= daysFromNextMonth; i++) {
-      result.days.push({
-        period: 'next',
-        date: new Date(date.getFullYear(), date.getMonth() + 1, i)
-      });
-    }
+  const leftDays = Math.ceil(result.days.length / 7) * 7 - result.days.length;
+
+  for (let i = 1; i <= leftDays; i++) {
+    result.days.push({
+      period: 'next',
+      date: new Date(date.getFullYear(), date.getMonth() + 1, i)
+    });
   }
 
   return result;

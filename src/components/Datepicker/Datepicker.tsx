@@ -6,7 +6,7 @@ import Calendar from '../icons/calendar-outline';
 import DatepickerCalendar from './DatepickerCalendar';
 import InputMask from 'react-input-mask';
 import {
-  DateFormat, DateLocale, IDateVariants
+  DateFormat, DateLocale, IDateVariants, WeekDay
 } from './DatepickerCalendar/datepicker.types';
 import useClickOutside from '../../hooks/useClickOutside';
 import Input from './Input/Input';
@@ -32,6 +32,7 @@ export interface IDatepickerProps {
   showTodayButton?: boolean;
   position?: 'left' | 'right';
   format?: DateFormat;
+  weekStartsFrom?: WeekDay;
 }
 
 const Datepicker: React.FC<IDatepickerProps> = ({
@@ -48,7 +49,8 @@ const Datepicker: React.FC<IDatepickerProps> = ({
   showDayOfWeek = false,
   showTodayButton = false,
   position = 'left',
-  format = 'dd.mm.yyyy'
+  format = 'dd.mm.yyyy',
+  weekStartsFrom = '1'
 }: IDatepickerProps) => {
 
   /** Validate locale */
@@ -339,6 +341,7 @@ const Datepicker: React.FC<IDatepickerProps> = ({
           position={ position }
           separator={ separator }
           format={ format }
+          weekStartsFrom={weekStartsFrom}
         />
       ) }
     </div>

@@ -5,7 +5,7 @@ import './DatepickerCalendar.scss';
 import Chevron from '../../icons/chevron-left';
 import {
   DateFormat, DateLocale,
-  IDatepickerActivePeriod, IDatepickerDay, IDatepickerPeriodType, IDatepickerStack
+  IDatepickerActivePeriod, IDatepickerDay, IDatepickerPeriodType, IDatepickerStack, WeekDay
 } from './datepicker.types';
 import { getTodayWordLocale } from '../_utils/dictionary';
 import { getMonthsList, getWeekdaysList } from '../_utils/localeNames';
@@ -30,6 +30,7 @@ interface IDatepickerCalendarProps {
   position: 'left' | 'right';
   format: DateFormat;
   separator: string;
+  weekStartsFrom: WeekDay;
 }
 
 const DatepickerCalendar: React.FC<IDatepickerCalendarProps> = ({
@@ -45,12 +46,13 @@ const DatepickerCalendar: React.FC<IDatepickerCalendarProps> = ({
   showTodayButton,
   position,
   format,
-  separator
+  separator,
+  weekStartsFrom
 }: IDatepickerCalendarProps) => {
 
   const contentRef = useRef<HTMLDivElement>(null);
   const months: string[] = useMemo(() => getMonthsList(locale), [locale]);
-  const weekDays: string[] = useMemo(() => getWeekdaysList(locale), [locale]);
+  const weekDays: string[] = useMemo(() => getWeekdaysList(locale, 'short', weekStartsFrom), [locale, weekStartsFrom]);
 
   // -------------------------------------------------------------------------------------------------------------------
 
@@ -173,26 +175,26 @@ const DatepickerCalendar: React.FC<IDatepickerCalendarProps> = ({
 
   // -------------------------------------------------------------------------------------------------------------------
 
-  const [activePeriod, setActivePeriod] = useState<IDatepickerActivePeriod>(getDaysForMonth(currentDate));
+  const [activePeriod, setActivePeriod] = useState<IDatepickerActivePeriod>(getDaysForMonth(weekStartsFrom, currentDate));
 
   useEffect(() => {
     if (!range) {
-      setActivePeriod(getDaysForMonth(currentDate));
+      setActivePeriod(getDaysForMonth(weekStartsFrom, currentDate));
 
       if (minDate && currentDate.getTime() < minDate.getTime()) {
-        setActivePeriod(getDaysForMonth(minDate));
+        setActivePeriod(getDaysForMonth(weekStartsFrom, minDate));
       }
 
       if (maxDate && currentDate.getTime() > maxDate.getTime()) {
-        setActivePeriod(getDaysForMonth(maxDate));
+        setActivePeriod(getDaysForMonth(weekStartsFrom, maxDate));
       }
     } else {
       if (minDate && rangeDates[0] && rangeDates[0].getTime() < minDate.getTime()) {
-        setActivePeriod(getDaysForMonth(minDate));
+        setActivePeriod(getDaysForMonth(weekStartsFrom, minDate));
       }
 
       if (maxDate && rangeDates[1] && rangeDates[1].getTime() > maxDate.getTime()) {
-        setActivePeriod(getDaysForMonth(maxDate));
+        setActivePeriod(getDaysForMonth(weekStartsFrom, maxDate));
       }
     }
   }, [
@@ -205,11 +207,11 @@ const DatepickerCalendar: React.FC<IDatepickerCalendarProps> = ({
   useEffect(() => {
     if (range) {
       if (rangeDates[1] !== undefined) {
-        setActivePeriod(getDaysForMonth(rangeDates[1]));
+        setActivePeriod(getDaysForMonth(weekStartsFrom, rangeDates[1]));
       } else if (rangeDates[0] !== undefined) {
-        setActivePeriod(getDaysForMonth(rangeDates[0]));
+        setActivePeriod(getDaysForMonth(weekStartsFrom, rangeDates[0]));
       } else {
-        setActivePeriod(getDaysForMonth(new Date()));
+        setActivePeriod(getDaysForMonth(weekStartsFrom, new Date()));
       }
     }
   }, [rangeDates, range]);
@@ -266,7 +268,7 @@ const DatepickerCalendar: React.FC<IDatepickerCalendarProps> = ({
 
   const onMonthClick = (e: React.MouseEvent, monthIndex: number) => {
     e.stopPropagation();
-    setActivePeriod(getDaysForMonth(new Date(activePeriod.year, monthIndex)));
+    setActivePeriod(getDaysForMonth(weekStartsFrom, new Date(activePeriod.year, monthIndex)));
     setTimeout(() => {
       setPeriodType('day');
     });
@@ -322,7 +324,7 @@ const DatepickerCalendar: React.FC<IDatepickerCalendarProps> = ({
 
   const onYearClick = (e: React.MouseEvent, year: number) => {
     e.stopPropagation();
-    setActivePeriod(getDaysForMonth(new Date(year, activePeriod.month)));
+    setActivePeriod(getDaysForMonth(weekStartsFrom, new Date(year, activePeriod.month)));
     setTimeout(() => {
       setPeriodType('month');
     });
@@ -377,11 +379,11 @@ const DatepickerCalendar: React.FC<IDatepickerCalendarProps> = ({
         nextYear--;
       }
 
-      setActivePeriod(getDaysForMonth(new Date(nextYear, nextMonth)));
+      setActivePeriod(getDaysForMonth(weekStartsFrom, new Date(nextYear, nextMonth)));
     }
 
     if (periodType === 'month') {
-      setActivePeriod(getDaysForMonth(new Date(activePeriod.year + n, activePeriod.month)));
+      setActivePeriod(getDaysForMonth(weekStartsFrom, new Date(activePeriod.year + n, activePeriod.month)));
     }
 
     if (periodType === 'year') {
