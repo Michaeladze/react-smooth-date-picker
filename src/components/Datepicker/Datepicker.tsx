@@ -269,15 +269,19 @@ const Datepicker: React.FC<IDatepickerProps> = ({
         const [fromValue, toValue] = inputValue.split(' - ');
 
 
+        let dayOfWeekTmp: string[] = dayOfWeek;
+
         if (fromValue && !fromValue.includes('_')) {
           const from = getReturnValue(fromValue, false);
-          setDayOfWeek([getWeekdayLocale(from.date.from, locale, 'short')]);
+          dayOfWeekTmp = [getWeekdayLocale(from.date.from, locale, 'short')];
         }
 
         if (toValue && !toValue.includes('_')) {
           const to = getReturnValue(toValue, false);
-          setDayOfWeek([...dayOfWeek, getWeekdayLocale(to.date.from, locale, 'short')]);
+          dayOfWeekTmp = [...dayOfWeekTmp, getWeekdayLocale(to.date.to, locale, 'short')];
         }
+
+        setDayOfWeek(dayOfWeekTmp);
       }
     }
   }, [
