@@ -47,4 +47,4 @@ export interface IFormattedDate {
 
 export type DateFormat = 'dd.mm.yyyy' | 'dd/mm/yyyy' | 'mm/dd/yyyy' | 'mm.dd.yyyy';
 
-export type WeekDay = 0 | 1 | 2 | 3 | 4 | 5 | 6 | '0' | '1' | '2' | '3' | '4' | '5' | '6';
+export type WeekDay = '0' | '1' | '2' | '3' | '4' | '5' | '6';

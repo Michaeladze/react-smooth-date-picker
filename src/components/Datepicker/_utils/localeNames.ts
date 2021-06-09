@@ -25,7 +25,7 @@ export const getWeekdayLocale = (date: Date, locale: DateLocale, length: 'short'
 };
 
 /** Locale list of weekdays */
-export const getWeekdaysList = (locale: DateLocale, length: 'short' | 'long' = 'short', weekStartsFrom: WeekDay = 1): string[] => {
+export const getWeekdaysList = (locale: DateLocale, length: 'short' | 'long' = 'short', weekStartsFrom: WeekDay = '1'): string[] => {
   const weekdayDateMap: Date[] = [
     new Date('2020-01-05'),
     new Date('2020-01-06'),
