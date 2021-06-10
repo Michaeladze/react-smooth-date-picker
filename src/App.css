@@ -12,16 +12,12 @@
 }
 
 :root {
-  --base-white: #ffffff;
-  --base-black: #000000;
-  --base-200: #FAFAFA;
-  --base-300: #F2F2F2;
-  --base-400: #AFAFAF;
-  --base-500: #888888;
+  --dp-base-white: #ffffff;
+  --dp-base-200: #FAFAFA;
+  --dp-base-300: #F2F2F2;
+  --dp-base-400: #AFAFAF;
+  --dp-base-500: #888888;
 
-  --accent-300: #EFF6F2;
-  --accent-400: #F2FFEC;
-  --accent-500: #058373;
-  --accent-600: #056458;
-  --accent-700: #113228;
+  --dp-accent-300: #F2F6FF;
+  --dp-accent-500: #3369FF;
 }

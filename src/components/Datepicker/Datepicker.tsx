@@ -1,4 +1,5 @@
 import React, {
+  ReactNode,
   useCallback, useEffect, useRef, useState
 } from 'react';
 import './Datepicker.scss';
@@ -9,7 +10,6 @@ import {
   DateFormat, DateLocale, IDateVariants, WeekDay
 } from './DatepickerCalendar/datepicker.types';
 import useClickOutside from '../../hooks/useClickOutside';
-import Input from './Input/Input';
 import { DEFAULT_LOCALE } from './_utils/constants';
 import { parseToFormat } from './_utils/parseToFormat';
 import { stringToDate } from './_utils/stringToDate';
@@ -33,6 +33,10 @@ export interface IDatepickerProps {
   position?: 'left' | 'right';
   format?: DateFormat;
   weekStartsFrom?: WeekDay;
+  /** Icons */
+  prevIcon?: ReactNode;
+  nextIcon?: ReactNode;
+  calendarIcon?: ReactNode;
 }
 
 const Datepicker: React.FC<IDatepickerProps> = ({
@@ -50,7 +54,10 @@ const Datepicker: React.FC<IDatepickerProps> = ({
   showTodayButton = false,
   position = 'left',
   format = 'dd.mm.yyyy',
-  weekStartsFrom = '1'
+  weekStartsFrom = '1',
+  prevIcon,
+  nextIcon,
+  calendarIcon
 }: IDatepickerProps) => {
 
   /** Validate locale */
@@ -308,10 +315,11 @@ const Datepicker: React.FC<IDatepickerProps> = ({
 
   const disabledClass = disabled ? 'ui-datepicker__input-wrapper--disabled' : '';
   const readOnlyClass = readOnly ? 'ui-datepicker__input-wrapper--readonly' : '';
+  const activeClass = showCalendar ? 'ui-datepicker__input-wrapper--active' : '';
 
   return (
     <div className='ui-datepicker' ref={ datepickerRef }>
-      <div className={ `ui-datepicker__input-wrapper ${disabledClass} ${readOnlyClass}` }
+      <div className={ `ui-datepicker__input-wrapper ${activeClass} ${disabledClass} ${readOnlyClass}` }
         ref={ inputRef }
         onFocus={ () => toggleCalendar(true) }>
         <InputMask
@@ -323,11 +331,11 @@ const Datepicker: React.FC<IDatepickerProps> = ({
           readOnly={ readOnly }
           onKeyPress={ onKeyPress }
           onChange={ onDatepickerChange }>
-          <Input/>
+          <input className='ui-datepicker__input'/>
         </InputMask>
 
-        <button className='ui-datepicker__calendar-button' style={ { color: 'var(--base-500)' } }>
-          <Calendar/>
+        <button className='ui-datepicker__calendar-button' style={ { color: 'var(--dp-base-500)' } }>
+          { calendarIcon || <Calendar/> }
         </button>
       </div>
       { showCalendar && (
@@ -346,6 +354,8 @@ const Datepicker: React.FC<IDatepickerProps> = ({
           separator={ separator }
           format={ format }
           weekStartsFrom={weekStartsFrom}
+          prevIcon={prevIcon}
+          nextIcon={nextIcon}
         />
       ) }
     </div>

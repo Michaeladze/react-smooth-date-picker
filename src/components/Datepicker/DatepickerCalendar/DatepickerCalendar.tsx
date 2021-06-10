@@ -31,6 +31,9 @@ interface IDatepickerCalendarProps {
   format: DateFormat;
   separator: string;
   weekStartsFrom: WeekDay;
+  /** Icons */
+  prevIcon?: ReactNode;
+  nextIcon?: ReactNode;
 }
 
 const DatepickerCalendar: React.FC<IDatepickerCalendarProps> = ({
@@ -47,7 +50,9 @@ const DatepickerCalendar: React.FC<IDatepickerCalendarProps> = ({
   position,
   format,
   separator,
-  weekStartsFrom
+  weekStartsFrom,
+  prevIcon,
+  nextIcon,
 }: IDatepickerCalendarProps) => {
 
   const contentRef = useRef<HTMLDivElement>(null);
@@ -446,7 +451,7 @@ const DatepickerCalendar: React.FC<IDatepickerCalendarProps> = ({
         <div className='ui-calendar__control'>
           <button type='button' className='ui-calendar__button ui-calendar__button--arrow ui-calendar__button-prev'
             disabled={ prevArrowDisabled } onClick={ () => onPeriodChange(-1) }>
-            <Chevron className='ui-datepicker__calendar-prev'/>
+            { prevIcon || <Chevron className='ui-datepicker__calendar-prev'/> }
           </button>
           <button type='button' className='ui-calendar__button ui-calendar__label-button'
             onClick={ onPeriodTypeChange }>
@@ -456,7 +461,7 @@ const DatepickerCalendar: React.FC<IDatepickerCalendarProps> = ({
           </button>
           <button type='button' className='ui-calendar__button ui-calendar__button--arrow ui-calendar__button-next'
             disabled={ nextArrowDisabled } onClick={ () => onPeriodChange(1) }>
-            <Chevron className='ui-datepicker__calendar-right'/>
+            { nextIcon || <Chevron className='ui-datepicker__calendar-right'/> }
           </button>
         </div>
         {
