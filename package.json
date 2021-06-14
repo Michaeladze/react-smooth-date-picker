@@ -1,7 +1,6 @@
 {
-  "name": "datepicker",
+  "name": "react-smooth-date-picker",
   "version": "0.1.0",
-  "private": true,
   "scripts": {
     "start": "react-scripts start",
     "test": "react-scripts test",
