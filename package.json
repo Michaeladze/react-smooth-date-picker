@@ -6,18 +6,24 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "build": "rimraf dist && tsc && webpack --config webpack.config.js",
-    "release": "release-it"
+    "semantic-release": "semantic-release"
   },
   "main": "dist/index.js",
   "files": [
     "dist"
   ],
+  "author": {
+    "email": "michael.kutateladze@gmail.com",
+    "name": "Michael Kutateladze",
+    "url": "https://github.com/Michaeladze"
+  },
   "keywords": [
     "react",
     "datepicker"
   ],
   "dependencies": {
-    "react-input-mask": "3.0.0-alpha.2"
+    "react-input-mask": "3.0.0-alpha.2",
+    "semantic-release": "^17.4.3"
   },
   "devDependencies": {
     "@babel/plugin-proposal-nullish-coalescing-operator": "^7.13.8",
@@ -45,7 +51,6 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
-    "release-it": "^14.9.0",
     "resolve-url-loader": "^3.1.2",
     "sass": "^1.34.1",
     "sass-loader": "^10.1.0",
@@ -70,5 +75,13 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/release-notes-generator",
+    "@semantic-release/changelog",
+    "@semantic-release/github",
+    "@semantic-release/npm",
+    "@semantic-release/git"
+  ]
 }
