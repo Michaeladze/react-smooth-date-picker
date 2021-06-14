@@ -9,14 +9,14 @@ function App() {
         width: '320px',
         marginBottom: '20px'
       }}>
-        <Datepicker showTodayButton placeholder='Выберите дату' locale='en' weekStartsFrom='1' showDayOfWeek/>
+        <Datepicker showTodayButton placeholder='Выберите дату' locale='ru' weekStartsFrom='1' showDayOfWeek/>
       </div>
 
       <div style={{
         width: '320px',
         marginBottom: '20px'
       }}>
-        <Datepicker showTodayButton placeholder='Выберите дату' locale='en' weekStartsFrom='1' range showDayOfWeek/>
+        <Datepicker showTodayButton placeholder='Выберите дату' locale='ru' weekStartsFrom='1' range showDayOfWeek/>
       </div>
     </div>
   );
