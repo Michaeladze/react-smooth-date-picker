@@ -78,7 +78,6 @@
   },
   "release-it": {
     "npm": {
-      "publish": true,
       "publishPath": "dist"
     }
   }
