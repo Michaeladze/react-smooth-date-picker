@@ -2,9 +2,6 @@
   "name": "datepicker",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "react-input-mask": "3.0.0-alpha.2"
-  },
   "scripts": {
     "start": "react-scripts start",
     "test": "react-scripts test",
@@ -12,20 +9,13 @@
     "build": "rimraf dist && tsc && webpack --config webpack.config.js",
     "release": "release-it"
   },
-  "eslintConfig": {
-    "extends": "./.eslintrc.json"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "main": "dist/index.js",
+  "keywords": [
+    "react",
+    "datepicker"
+  ],
+  "dependencies": {
+    "react-input-mask": "3.0.0-alpha.2"
   },
   "devDependencies": {
     "@babel/plugin-proposal-nullish-coalescing-operator": "^7.13.8",
@@ -63,5 +53,20 @@
     "url-loader": "^4.1.1",
     "web-vitals": "^1.0.1",
     "webpack-cli": "^4.7.2"
+  },
+  "eslintConfig": {
+    "extends": "./.eslintrc.json"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
