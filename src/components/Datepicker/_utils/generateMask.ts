@@ -1,4 +1,4 @@
-import { DateFormat } from '../DatepickerCalendar/datepicker.types';
+import { DateFormat } from './datepicker.types';
 
 type GM = (string | RegExp)[];
 

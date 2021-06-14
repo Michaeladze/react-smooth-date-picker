@@ -1,4 +1,4 @@
-import { DateFormat } from '../DatepickerCalendar/datepicker.types';
+import { DateFormat } from './datepicker.types';
 import { addLeadingZeros } from './common';
 
 export const formatDate = (date: string | number | undefined, format: DateFormat): string => {

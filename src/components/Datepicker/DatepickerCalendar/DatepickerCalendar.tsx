@@ -6,7 +6,7 @@ import Chevron from '../../icons/chevron-left';
 import {
   DateFormat, DateLocale,
   IDatepickerActivePeriod, IDatepickerDay, IDatepickerPeriodType, IDatepickerStack, WeekDay
-} from './datepicker.types';
+} from '../_utils/datepicker.types';
 import { getTodayWordLocale } from '../_utils/dictionary';
 import { getMonthsList, getWeekdaysList } from '../_utils/localeNames';
 import { stringToDate } from '../_utils/stringToDate';

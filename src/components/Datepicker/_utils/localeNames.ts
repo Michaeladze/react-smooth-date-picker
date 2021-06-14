@@ -1,4 +1,4 @@
-import { DateLocale, WeekDay } from '../DatepickerCalendar/datepicker.types';
+import { DateLocale, WeekDay } from './datepicker.types';
 import { replaceAt } from './common';
 
 /** Locale month name */

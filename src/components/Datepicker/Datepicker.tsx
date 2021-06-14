@@ -8,7 +8,7 @@ import DatepickerCalendar from './DatepickerCalendar';
 import InputMask from 'react-input-mask';
 import {
   DateFormat, DateLocale, IDateVariants, WeekDay
-} from './DatepickerCalendar/datepicker.types';
+} from './_utils/datepicker.types';
 import useClickOutside from '../../hooks/useClickOutside';
 import { DEFAULT_LOCALE } from './_utils/constants';
 import { parseToFormat } from './_utils/parseToFormat';

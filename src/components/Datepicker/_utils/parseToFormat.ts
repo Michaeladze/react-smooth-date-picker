@@ -1,4 +1,4 @@
-import { DateFormat } from '../DatepickerCalendar/datepicker.types';
+import { DateFormat } from './datepicker.types';
 import { replaceAt } from './common';
 import { formatDate } from './formatDate';
 

@@ -1,4 +1,4 @@
-import { DateLocale } from '../DatepickerCalendar/datepicker.types';
+import { DateLocale } from './datepicker.types';
 
 const dictionary: Record<DateLocale, string> = {
   'en-US': 'Today',

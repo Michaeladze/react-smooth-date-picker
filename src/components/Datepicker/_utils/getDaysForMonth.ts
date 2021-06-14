@@ -1,4 +1,4 @@
-import { IDatepickerActivePeriod, WeekDay } from '../DatepickerCalendar/datepicker.types';
+import { IDatepickerActivePeriod, WeekDay } from './datepicker.types';
 
 export const getDaysForMonth = (weekStartsFrom: WeekDay, d?: Date): IDatepickerActivePeriod => {
   const date = d || new Date();

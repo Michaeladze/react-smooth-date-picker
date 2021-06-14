@@ -1,4 +1,4 @@
-import { DateFormat } from '../DatepickerCalendar/datepicker.types';
+import { DateFormat } from './datepicker.types';
 import { formatDate } from './formatDate';
 
 export const stringToDate = (s: string, format: DateFormat): Date => {
