@@ -1,6 +1,6 @@
 {
   "name": "react-smooth-date-picker",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "scripts": {
     "start": "react-scripts start",
     "test": "react-scripts test",
@@ -9,6 +9,9 @@
     "release": "release-it"
   },
   "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
   "keywords": [
     "react",
     "datepicker"
